@@ -12,7 +12,7 @@ type EffectNoLoss struct {
 	old effect.Effect
 }
 
-func NewEffectNowLoss(new, old effect.Effect) EffectNoLoss {
+func NewEffectNoLoss(new, old effect.Effect) EffectNoLoss {
 	return EffectNoLoss{
 		new: new,
 		old: old,

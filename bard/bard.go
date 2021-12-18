@@ -110,7 +110,7 @@ func (handler *Handler) HandleItemUse(ctx *event.Context) {
 
 			for _, p := range player.PlayersInRadius(bard.EffectRadius()) {
 				if e, ok := hcf.HasEffectUnderLVL(p, i.Effect(), i.Effect().Level()); ok {
-					hcf.NewEffectNowLoss(i.Effect(), e).Add(p)
+					hcf.NewEffectNoLoss(i.Effect(), e).Add(p)
 				} else {
 					p.AddEffect(i.Effect())
 				}
