@@ -4,6 +4,7 @@ import (
 	"github.com/df-mc/dragonfly/server/entity/effect"
 	"github.com/df-mc/dragonfly/server/entity/physics"
 	"github.com/df-mc/dragonfly/server/player"
+	"github.com/df-mc/dragonfly/server/player/scoreboard"
 	"github.com/df-mc/dragonfly/server/world"
 	"github.com/go-gl/mathgl/mgl64"
 )
@@ -11,12 +12,14 @@ import (
 type Player struct {
 	class Class
 	*player.Player
+	scoreboard *scoreboard.Scoreboard
 }
 
 func NewPlayer(p *player.Player) *Player {
 	return &Player{
-		class:  nil,
-		Player: p,
+		class:      nil,
+		Player:     p,
+		scoreboard: scoreboard.New("hcf"),
 	}
 }
 
@@ -27,6 +30,13 @@ func HasEffectUnderLVL(p *player.Player, e2 effect.Effect, lvl int) (effect.Effe
 		}
 	}
 	return effect.Effect{}, false
+}
+
+func (p *Player) SetScoreboardLine(line int, content string) {
+	p.scoreboard.Set(line, content)
+}
+func (p *Player) RemoveScoreboardLine(line int) {
+	p.scoreboard.Remove(line)
 }
 
 func (p *Player) Class() Class { return p.class }
