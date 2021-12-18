@@ -4,8 +4,8 @@ import (
 	"github.com/df-mc/dragonfly/server"
 	"github.com/df-mc/dragonfly/server/item"
 	"github.com/df-mc/dragonfly/server/item/armour"
-	"github.com/df-mc/dragonfly/server/item/inventory"
 	"github.com/dragonfly-on-steroids/hcf"
+	"github.com/dragonfly-on-steroids/hcf/bard"
 )
 
 func main() {
@@ -14,6 +14,8 @@ func main() {
 	s := server.New(&c, nil)
 	s.Start()
 	session := hcf.NewSession()
+
+	hcf.RegisterClass(bard.DefaultBard)
 	for {
 		p, err := s.Accept()
 		if err != nil {
@@ -21,7 +23,7 @@ func main() {
 		}
 
 		P := hcf.NewPlayer(p)
-		p.Armour().(*inventory.Armour).Inv().Handle(&hcf.ClassHandler{P: P})
+		p.Armour().Inventory().Handle(&hcf.ClassHandler{P: P})
 		p.Inventory().AddItem(item.NewStack(item.Sugar{}, 64))
 		p.Inventory().AddItem(item.NewStack(item.SpiderEye{}, 64))
 

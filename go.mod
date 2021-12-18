@@ -3,7 +3,7 @@ module github.com/dragonfly-on-steroids/hcf
 go 1.17
 
 require (
-	github.com/df-mc/dragonfly v0.4.3-0.20211207111742-73e9bd5104f5 // direct
+	github.com/df-mc/dragonfly v0.4.3-0.20211218020908-962af33f2031 // direct
 	github.com/go-gl/mathgl v1.0.0
 )
 

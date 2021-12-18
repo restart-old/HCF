@@ -10,11 +10,16 @@ import (
 	"github.com/df-mc/dragonfly/server/world"
 )
 
+var classes []Class
+
+func RegisterClass(c Class) { classes = append(classes, c) }
+
 type Class interface {
 	Tickers(*Player) []*TickerFunc
 	ArmourTiers() ArmourTiers
 	Effects() []effect.Effect
 	Handler(*Player) player.Handler
+	New(*Player) Class
 }
 
 type ClassUseItem interface {
@@ -40,12 +45,12 @@ func (*ClassHandler) Name() string { return "ClassHandler" }
 func (h *ClassHandler) HandlePlace(ctx *event.Context, slot int, i item.Stack) {
 	p := h.P
 	if _, ok := i.Item().(armour.Armour); ok {
-		fakeContainer := *h.P.Armour().(*inventory.Armour)
-		fakeContainer.Inv().AddItem(i)
-		if IsClass(&fakeContainer, &Bard{}) {
-			p.SetClass(NewBard(p, 120, 35))
-		} else if IsClass(&fakeContainer, &Archer{}) {
-			p.SetClass(NewArcher(120))
+		fakeContainer := *h.P.Armour()
+		fakeContainer.Inventory().AddItem(i)
+		for _, class := range classes {
+			if IsClass(&fakeContainer, class) {
+				p.SetClass(class.New(p))
+			}
 		}
 	}
 }

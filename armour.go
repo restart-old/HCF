@@ -3,6 +3,7 @@ package hcf
 import (
 	"github.com/df-mc/dragonfly/server/item"
 	"github.com/df-mc/dragonfly/server/item/armour"
+	"github.com/df-mc/dragonfly/server/item/inventory"
 )
 
 type ArmourTiers struct {
@@ -12,7 +13,7 @@ type ArmourTiers struct {
 	Boots     armour.Tier
 }
 
-func IsClass(a item.ArmourContainer, class Class) bool {
+func IsClass(a *inventory.Armour, class Class) bool {
 	tiers := class.ArmourTiers()
 
 	helmet := item.Helmet{Tier: tiers.Helmet}

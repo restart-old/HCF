@@ -12,6 +12,13 @@ type EffectNoLoss struct {
 	old effect.Effect
 }
 
+func NewEffectNowLoss(new, old effect.Effect) EffectNoLoss {
+	return EffectNoLoss{
+		new: new,
+		old: old,
+	}
+}
+
 func (e EffectNoLoss) Add(p *player.Player) {
 	p.AddEffect(e.new)
 	time.AfterFunc(e.new.Duration(), func() {

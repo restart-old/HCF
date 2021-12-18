@@ -1,4 +1,4 @@
-package hcf
+package bard
 
 import (
 	"math"
@@ -10,25 +10,33 @@ import (
 	"github.com/df-mc/dragonfly/server/event"
 	"github.com/df-mc/dragonfly/server/item"
 	"github.com/df-mc/dragonfly/server/item/armour"
+	"github.com/dragonfly-on-steroids/hcf"
 
 	"github.com/df-mc/dragonfly/server/player"
 )
+
+var DefaultBard = &Bard{}
 
 var bardUseItems sync.Map
 var bardHeldItems sync.Map
 
 func init() {
-	bardUseItems.Store(BardUseSugar{}.Item(), BardUseSugar{})
+	bardUseItems.Store(UseSugar{}.Item(), UseSugar{})
 	bardUseItems.Store(SpiderEye{}.Item(), SpiderEye{})
 }
 
 func init() {
-	bardHeldItems.Store(BardHeldSugar{}.Item(), BardHeldSugar{})
+	bardHeldItems.Store(HeldSugar{}.Item(), HeldSugar{})
 }
 
-func NewBard(p *Player, maxEnergy int, effectRadius float64) *Bard {
-	b := &Bard{energy: maxEnergy, maxEnergy: maxEnergy, effectRadius: effectRadius}
-	b.AddTicker(NewTickerFunc(50*time.Millisecond, heldItemFunc(b, p)))
+func (*Bard) New(p *hcf.Player) hcf.Class {
+	b := &Bard{energy: 0, maxEnergy: 120, effectRadius: 35}
+	b.AddTicker(hcf.NewTickerFunc(50*time.Millisecond, heldItemFunc(b, p)))
+	b.AddTicker(hcf.NewTickerFunc(1*time.Second, func() {
+		if b.energy < b.maxEnergy+1 {
+			b.energy++
+		}
+	}))
 	return b
 }
 
@@ -36,10 +44,10 @@ type Bard struct {
 	energy, maxEnergy int
 	effectRadius      float64
 	effectCoolDown    time.Time
-	tickers           []*TickerFunc
+	tickers           []*hcf.TickerFunc
 }
 
-func (b *Bard) AddTicker(t *TickerFunc) {
+func (b *Bard) AddTicker(t *hcf.TickerFunc) {
 	b.tickers = append(b.tickers, t)
 }
 
@@ -58,12 +66,12 @@ func (*Bard) Effects() []effect.Effect {
 		effect.New(effect.Resistance{}, 2, 43830*time.Minute),
 	}
 }
-func (b *Bard) Tickers(p *Player) []*TickerFunc {
+func (b *Bard) Tickers(p *hcf.Player) []*hcf.TickerFunc {
 	return b.tickers
 }
 
-func (*Bard) ArmourTiers() ArmourTiers {
-	return ArmourTiers{
+func (*Bard) ArmourTiers() hcf.ArmourTiers {
+	return hcf.ArmourTiers{
 		Helmet:    armour.TierGold,
 		Chestlate: armour.TierGold,
 		Leggings:  armour.TierGold,
@@ -71,22 +79,22 @@ func (*Bard) ArmourTiers() ArmourTiers {
 	}
 }
 
-func (*Bard) Handler(p *Player) player.Handler {
-	return &BardHandler{p: p}
+func (*Bard) Handler(p *hcf.Player) player.Handler {
+	return &Handler{p: p}
 }
 
-type BardHandler struct {
+type Handler struct {
 	player.NopHandler
-	p *Player
+	p *hcf.Player
 }
 
-func (handler *BardHandler) HandleItemUse(ctx *event.Context) {
+func (handler *Handler) HandleItemUse(ctx *event.Context) {
 	var n int
 	player := handler.p
 	if bard, ok := player.Class().(*Bard); ok {
 		heldItem, _ := player.HeldItems()
 		if i, ok := bardUseItems.Load(heldItem.Item()); ok {
-			i := i.(ClassUseItem)
+			i := i.(hcf.ClassUseItem)
 			if bard.OnEffectCoolDown() {
 				player.Messagef("§cYou cannot use this for another %v seconds!", math.Floor(float64(time.Until(bard.effectCoolDown).Seconds()*10))/10)
 				return
@@ -101,8 +109,8 @@ func (handler *BardHandler) HandleItemUse(ctx *event.Context) {
 			effectName := reflect.TypeOf(i.Effect().Type()).Name()
 
 			for _, p := range player.PlayersInRadius(bard.EffectRadius()) {
-				if e, ok := HasEffectUnderLVL(p, i.Effect(), i.Effect().Level()); ok {
-					EffectNoLoss{new: i.Effect(), old: e}.Add(p)
+				if e, ok := hcf.HasEffectUnderLVL(p, i.Effect(), i.Effect().Level()); ok {
+					hcf.NewEffectNowLoss(i.Effect(), e).Add(p)
 				} else {
 					p.AddEffect(i.Effect())
 				}

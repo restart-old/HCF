@@ -1,4 +1,4 @@
-package hcf
+package archer
 
 import (
 	"sync"
@@ -8,17 +8,24 @@ import (
 	"github.com/df-mc/dragonfly/server/event"
 	"github.com/df-mc/dragonfly/server/item/armour"
 	"github.com/df-mc/dragonfly/server/player"
+	"github.com/dragonfly-on-steroids/hcf"
 )
 
 var archerItems sync.Map
 
 func init() {
+	archerItems.Store(Sugar{}.Item(), Sugar{})
+}
 
+func (*Archer) New(p *hcf.Player) hcf.Class {
+	b := &Archer{energy: 0, maxEnergy: 120}
+	return b
 }
 
 type Archer struct {
 	energy, maxEnergy int
 	effectCoolDown    time.Time
+	tickers           []*hcf.TickerFunc
 }
 
 func NewArcher(maxEnergy int) *Archer {
@@ -38,8 +45,8 @@ func (*Archer) Effects() []effect.Effect {
 	}
 }
 
-func (*Archer) ArmourTiers() ArmourTiers {
-	return ArmourTiers{
+func (*Archer) ArmourTiers() hcf.ArmourTiers {
+	return hcf.ArmourTiers{
 		Helmet:    armour.TierLeather,
 		Chestlate: armour.TierLeather,
 		Leggings:  armour.TierLeather,
@@ -47,25 +54,25 @@ func (*Archer) ArmourTiers() ArmourTiers {
 	}
 }
 
-func (*Archer) Handler(p *Player) player.Handler {
-	return &ArcherHandler{p: p}
+func (*Archer) Handler(p *hcf.Player) player.Handler {
+	return &Handler{p: p}
 }
 
-type ArcherHandler struct {
+type Handler struct {
 	player.NopHandler
-	p *Player
+	p *hcf.Player
 }
 
-func (*Archer) Tickers(p *Player) []*TickerFunc {
-	return nil
+func (a *Archer) Tickers(p *hcf.Player) []*hcf.TickerFunc {
+	return a.tickers
 }
 
-func (handler *ArcherHandler) HandleItemUse(ctx *event.Context) {
+func (handler *Handler) HandleItemUse(ctx *event.Context) {
 	player := handler.p
 	if archer, ok := player.Class().(*Archer); ok {
 		heldItem, _ := player.HeldItems()
 		if i, ok := archerItems.Load(heldItem.Item()); ok {
-			i := i.(ClassUseItem)
+			i := i.(hcf.ClassUseItem)
 			if archer.OnEffectCoolDown() {
 				player.Messagef("")
 				return
