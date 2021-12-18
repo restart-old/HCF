@@ -24,7 +24,8 @@ func main() {
 
 		P := hcf.NewPlayer(p)
 
-		go hcf.ScoreboardTicker(P).Start()
+		ticker := hcf.ScoreboardTicker(P)
+		go ticker.Start()
 
 		p.Armour().Inventory().Handle(&hcf.ClassHandler{P: P})
 		p.Inventory().AddItem(item.NewStack(item.Sugar{}, 64))

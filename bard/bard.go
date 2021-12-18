@@ -20,9 +20,18 @@ var DefaultBard = &Bard{}
 var bardUseItems sync.Map
 var bardHeldItems sync.Map
 
+func RegisterBardUseItem(i ...hcf.ClassUseItem) {
+	for _, useItem := range i {
+		bardUseItems.Store(useItem.Item(), useItem)
+	}
+}
+
 func init() {
-	bardUseItems.Store(UseSugar{}.Item(), UseSugar{})
-	bardUseItems.Store(SpiderEye{}.Item(), SpiderEye{})
+	RegisterBardUseItem(
+		UseSugar{},
+		SpiderEye{},
+		UseIronIngot{},
+	)
 }
 
 func init() {
