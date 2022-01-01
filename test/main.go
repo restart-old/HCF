@@ -6,6 +6,7 @@ import (
 	"github.com/df-mc/dragonfly/server/item/armour"
 	"github.com/dragonfly-on-steroids/hcf"
 	"github.com/dragonfly-on-steroids/hcf/bard"
+	"github.com/dragonfly-on-steroids/hcf/sniper"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	session := hcf.NewSession()
 
 	hcf.RegisterClass(bard.DefaultBard)
+	hcf.RegisterClass(sniper.DefaultSniper)
 	for {
 		p, err := s.Accept()
 		if err != nil {
@@ -35,6 +37,11 @@ func main() {
 		p.Inventory().AddItem(item.NewStack(item.Chestplate{Tier: armour.TierGold}, 1))
 		p.Inventory().AddItem(item.NewStack(item.Leggings{Tier: armour.TierGold}, 1))
 		p.Inventory().AddItem(item.NewStack(item.Boots{Tier: armour.TierGold}, 1))
+
+		p.Inventory().AddItem(item.NewStack(item.Helmet{Tier: armour.TierChain}, 1))
+		p.Inventory().AddItem(item.NewStack(item.Chestplate{Tier: armour.TierLeather}, 1))
+		p.Inventory().AddItem(item.NewStack(item.Leggings{Tier: armour.TierChain}, 1))
+		p.Inventory().AddItem(item.NewStack(item.Boots{Tier: armour.TierLeather}, 1))
 		session.StorePlayer(P)
 	}
 }
