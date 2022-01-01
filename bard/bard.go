@@ -2,10 +2,10 @@ package bard
 
 import (
 	"math"
-	"reflect"
 	"sync"
 	"time"
 
+	"github.com/RestartFU/dfutils"
 	"github.com/df-mc/dragonfly/server/entity/effect"
 	"github.com/df-mc/dragonfly/server/event"
 	"github.com/df-mc/dragonfly/server/item"
@@ -115,7 +115,6 @@ func (handler *Handler) HandleItemUse(ctx *event.Context) {
 			bard.SetEffectCoolDown(10 * time.Second)
 			bard.RemoveEnergy(i.Energy())
 			player.Inventory().RemoveItem(item.NewStack(i.Item(), 1))
-			effectName := reflect.TypeOf(i.Effect().Type()).Name()
 
 			for _, p := range player.PlayersInRadius(bard.EffectRadius()) {
 				if e, ok := hcf.HasEffectUnderLVL(p, i.Effect(), i.Effect().Level()); ok {
@@ -125,24 +124,9 @@ func (handler *Handler) HandleItemUse(ctx *event.Context) {
 				}
 				n++
 			}
-			player.Messagef("§eYou have given §9%s %s§e to §a%v §eteammates", effectName, intToRoman(i.Effect().Level()), n)
+			eName := dfutils.EffectName(i.Effect())
+			eLVL, _ := dfutils.Itor(i.Effect().Level())
+			player.Messagef("§eYou have given §9%s %s§e to §a%v §eteammates", eName, eLVL, n)
 		}
 	}
-}
-
-//up to 10
-func intToRoman(n int) string {
-	m := []string{
-		"I",
-		"II",
-		"III",
-		"IV",
-		"V",
-		"VI",
-		"VII",
-		"VIII",
-		"IX",
-		"X",
-	}
-	return m[n-1]
 }

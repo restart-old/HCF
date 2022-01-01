@@ -3,11 +3,12 @@ module github.com/dragonfly-on-steroids/hcf
 go 1.17
 
 require (
-	github.com/df-mc/dragonfly v0.4.3-0.20211218020908-962af33f2031 // direct
+	github.com/df-mc/dragonfly v0.4.3-0.20211228034935-5c6150017867 // direct
 	github.com/go-gl/mathgl v1.0.0
 )
 
 require (
+	github.com/RestartFU/dfutils v0.0.0-20211230014125-f9dce061f87c // indirect
 	github.com/brentp/intintmap v0.0.0-20190211203843-30dc0ade9af9 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/df-mc/goleveldb v1.1.9 // indirect

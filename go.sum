@@ -35,6 +35,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
+github.com/RestartFU/dfutils v0.0.0-20211230014125-f9dce061f87c h1:GoS0tVBtHaiZgj7MolW6AMifpW9hClZB8hq3/vRE28M=
+github.com/RestartFU/dfutils v0.0.0-20211230014125-f9dce061f87c/go.mod h1:K9y4vOaNcW5iOz0vLzJ5CKuTYcVV6f176019pVLnsXg=
 github.com/brentp/intintmap v0.0.0-20190211203843-30dc0ade9af9 h1:/G0ghZwrhou0Wq21qc1vXXMm/t/aKWkALWwITptKbE0=
 github.com/brentp/intintmap v0.0.0-20190211203843-30dc0ade9af9/go.mod h1:TOk10ahXejq9wkEaym3KPRNeuR/h5Jx+s8QRWIa2oTM=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
@@ -50,6 +52,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/df-mc/dragonfly v0.4.3-0.20211218020908-962af33f2031 h1:52CJ/jm4BIzqO91TdRpwFC1uvaVrW1oe1hjODlpWAX0=
 github.com/df-mc/dragonfly v0.4.3-0.20211218020908-962af33f2031/go.mod h1:saPioTIQPe/rDjVCbwkPie95qBuFilmreqZJM3HylOo=
+github.com/df-mc/dragonfly v0.4.3-0.20211228034935-5c6150017867 h1:C+E8NZlp1mFbc7sA6T9h/qMPBrLSAZprKPjn8eN6FTM=
+github.com/df-mc/dragonfly v0.4.3-0.20211228034935-5c6150017867/go.mod h1:saPioTIQPe/rDjVCbwkPie95qBuFilmreqZJM3HylOo=
 github.com/df-mc/goleveldb v1.1.9 h1:ihdosZyy5jkQKrxucTQmN90jq/2lUwQnJZjIYIC/9YU=
 github.com/df-mc/goleveldb v1.1.9/go.mod h1:+NHCup03Sci5q84APIA21z3iPZCuk6m6ABtg4nANCSk=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
